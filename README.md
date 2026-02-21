@@ -5,7 +5,7 @@ Compact keyword-spotting pipeline designed for edge deployment. Audio is standar
 ## Paper
 This repository includes a short technical report describing the design choices, hyperparameters, and final results:
 
-- **Open the paper in GitHub**: [`keywordds_spotter.pdf`](keywordds_spotter.pdf)
+- **Open the paper in GitHub**: [`keywords_spotter.pdf`](keywords_spotter.pdf)
 
 ## Why this project
 - End-to-end edge-oriented ML pipeline (feature extraction → model → export → quantization)
