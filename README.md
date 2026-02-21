@@ -7,9 +7,7 @@ This repository includes a short technical report describing the design choices,
 
 - **Open the paper in GitHub**: [`keywordds_spotter.pdf`](keywordds_spotter.pdf)
 
-> If you rename the PDF (e.g., to `keyword_spotter.pdf`), update the link above accordingly.
-
-## Why this project (portfolio angle)
+## Why this project
 - End-to-end edge-oriented ML pipeline (feature extraction → model → export → quantization)
 - Concrete constraints: model size + latency + confidence thresholding (pass@0.999)
 - Clear metrics and reproducible setup
