@@ -73,7 +73,7 @@ Exports are saved in:
 ## How to run
 ### 1) Train + export + quantize
 ```bash
-  python main.py \
+python main.py \
   --sampling-rate 16000 \
   --frame-length 0.032 --frame-step 0.032 \
   --n-mels 20 --n-mfcc 20 \
