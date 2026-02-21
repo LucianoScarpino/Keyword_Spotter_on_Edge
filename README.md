@@ -1,6 +1,13 @@
 ## Keyword Spotter (KWS) on Edge — MFCC (ONNX) + Tiny CNN (ONNX/INT8)
 
-Compact keyword-spotting pipeline designed for edge deployment. Audio is standardized (mono, **16 kHz**, **1 s** window), converted to **MFCC** by an **ONNX frontend**, then classified by a lightweight **CNN** exported as a separate **ONNX** graph. The project includes training, ONNX export, and static **INT8** quantization (QDQ + entropy calibration + per-channel weights).  [oai_citation:0‡report.pdf](sediment://file_000000001d487246a20043dbc8a97eff)
+Compact keyword-spotting pipeline designed for edge deployment. Audio is standardized (mono, **16 kHz**, **1 s** window), converted to **MFCC** by an **ONNX frontend**, then classified by a lightweight **CNN** exported as a separate **ONNX** graph. The project includes training, ONNX export, and static **INT8** quantization (QDQ + entropy calibration + per-channel weights).
+
+## Paper
+This repository includes a short technical report describing the design choices, hyperparameters, and final results:
+
+- **Open the paper in GitHub**: [`keywordds_spotter.pdf`](keywordds_spotter.pdf)
+
+> If you rename the PDF (e.g., to `keyword_spotter.pdf`), update the link above accordingly.
 
 ## Why this project (portfolio angle)
 - End-to-end edge-oriented ML pipeline (feature extraction → model → export → quantization)
@@ -27,7 +34,7 @@ Compact keyword-spotting pipeline designed for edge deployment. Audio is standar
 - Frames per 1 s: **31**
 - n_mels: **20**
 - n_mfcc: **20**
-- fmin / fmax: **40 Hz / 6000 Hz**  [oai_citation:1‡report.pdf](sediment://file_000000001d487246a20043dbc8a97eff)
+- fmin / fmax: **40 Hz / 6000 Hz**
 
 ### Training
 - Optimizer: Adam, lr **1e-3**, wd **0**
@@ -35,13 +42,13 @@ Compact keyword-spotting pipeline designed for edge deployment. Audio is standar
 - Batch size: **64**
 - Scheduler: CosineAnnealing (ηmin **1e-5**)
 - BN freeze: epoch **6**
-- Seeds: torch/numpy/python = **0**  [oai_citation:2‡report.pdf](sediment://file_000000001d487246a20043dbc8a97eff)
+- Seeds: torch/numpy/python = **0**
 
 ### Model
 - Stem conv **3×3** (stride (2,1) to downsample frequency only)
 - **5** depthwise-separable residual blocks
 - Global average pooling + linear classifier
-- Width multiplier **w = 0.28** (controls channel scaling)  [oai_citation:3‡report.pdf](sediment://file_000000001d487246a20043dbc8a97eff)
+- Width multiplier **w = 0.28** (controls channel scaling)
 
 ---
 
@@ -50,7 +57,7 @@ Compact keyword-spotting pipeline designed for edge deployment. Audio is standar
 - ONNX Float32 size: **198.2 KB** (frontend 40.5 KB + model 157.7 KB)
 - ONNX INT8 size: **124.6 KB** (model 84.1 KB total)
 - End-to-end latency (approx.): **5.0 ms** (3.4 ms model + 1.5 ms frontend)
-- pass@0.999 (correct): **0.28** (PyTorch), **0.28** (ONNX Float32), **0.275** (ONNX INT8)  [oai_citation:4‡report.pdf](sediment://file_000000001d487246a20043dbc8a97eff)
+- pass@0.999 (correct): **0.28** (PyTorch), **0.28** (ONNX Float32), **0.275** (ONNX INT8)
 
 > pass@0.999 measures the fraction of samples correctly classified with max softmax probability > 0.999 (relevant when using a high-confidence trigger).
 
@@ -81,7 +88,6 @@ python main.py \
   --lr 1e-3 --weight-decay 0 \
   --model-width-mult 0.28 \
   --seed 0 --train-batch-size 64
-```
 ---
 ## Smart Hygrometer (Raspberry Pi) — Voice-controlled data logging (RedisTimeSeries)
 
