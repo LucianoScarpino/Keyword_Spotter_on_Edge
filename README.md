@@ -81,7 +81,7 @@ python main.py \
   --lr 1e-3 --weight-decay 0 \
   --model-width-mult 0.28 \
   --seed 0 --train-batch-size 64
-
+```
 --
 ## Smart Hygrometer (Raspberry Pi) — Voice-controlled data logging (RedisTimeSeries)
 
