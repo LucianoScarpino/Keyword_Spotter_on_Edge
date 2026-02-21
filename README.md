@@ -73,4 +73,13 @@ Exports are saved in:
 ## How to run
 ### 1) Train + export + quantize
 ```bash
-python main.py
+  python main.py \
+  --sampling-rate 16000 \
+  --frame-length 0.032 --frame-step 0.032 \
+  --n-mels 20 --n-mfcc 20 \
+  --f-min 40 --f-max 6000 \
+  --lr 1e-3 --weight-decay 0 \
+  --model-width-mult 0.28 \
+  --seed 0 --train-batch-size 64
+
+
