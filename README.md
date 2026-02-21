@@ -82,7 +82,7 @@ python main.py \
   --model-width-mult 0.28 \
   --seed 0 --train-batch-size 64
 ```
---
+---
 ## Smart Hygrometer (Raspberry Pi) — Voice-controlled data logging (RedisTimeSeries)
 
 `hygrometer.py` is the edge application that runs on a Raspberry Pi and turns the KWS model into a real system.
