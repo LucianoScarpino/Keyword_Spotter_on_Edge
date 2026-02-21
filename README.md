@@ -1,4 +1,4 @@
-# Keyword Spotter (KWS) on Edge — MFCC (ONNX) + Tiny CNN (ONNX/INT8)
+## Keyword Spotter (KWS) on Edge — MFCC (ONNX) + Tiny CNN (ONNX/INT8)
 
 Compact keyword-spotting pipeline designed for edge deployment. Audio is standardized (mono, **16 kHz**, **1 s** window), converted to **MFCC** by an **ONNX frontend**, then classified by a lightweight **CNN** exported as a separate **ONNX** graph. The project includes training, ONNX export, and static **INT8** quantization (QDQ + entropy calibration + per-channel weights).  [oai_citation:0‡report.pdf](sediment://file_000000001d487246a20043dbc8a97eff)
 
@@ -81,5 +81,40 @@ python main.py \
   --lr 1e-3 --weight-decay 0 \
   --model-width-mult 0.28 \
   --seed 0 --train-batch-size 64
+
+--
+## Smart Hygrometer (Raspberry Pi) — Voice-controlled data logging (RedisTimeSeries)
+
+`hygrometer.py` is the edge application that runs on a Raspberry Pi and turns the KWS model into a real system.
+
+### What it does
+- Continuously records audio from a microphone (**int16 @ 48 kHz**), then **downsamples to 16 kHz**.
+- Runs a **2-stage ONNX pipeline**:
+  1) `Group12_frontend.onnx` → MFCC/features  
+  2) `Group12_model.onnx` → logits → softmax probabilities
+- Uses a strict confidence gate (**threshold = 0.999**) to avoid false triggers.
+- Interprets two keywords:
+  - **"up"** → enables sensor data collection
+  - **"stop"** → disables sensor data collection
+- When enabled, reads **DHT11** temperature/humidity from GPIO and uploads them to **RedisTimeSeries**.
+
+### Runtime behavior (control logic)
+- Inference runs every **1 second** on a rolling audio window.
+- Sensor upload runs every **5 seconds** only when collection is enabled.
+- This gives a clean “hands-free switch” for data logging on-device.
+
+### Requirements
+- Raspberry Pi + **DHT11** on GPIO (configured as `board.D4`)
+- Microphone accessible to `sounddevice`
+- Redis Cloud credentials (host/port/user/password)
+- ONNX Runtime on CPU (`CPUExecutionProvider`)
+
+### Run
+```bash
+python hygrometer.py \
+  --host <REDIS_HOST> \
+  --port <REDIS_PORT> \
+  --user <REDIS_USER> \
+  --password <REDIS_PASSWORD>
 
 
